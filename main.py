@@ -157,48 +157,6 @@ class ApplicationFilling:
                 print(f"Job Title and Location Entered number:{number}")
                 break
 
-        # job_title_field = driver.find_element(by=By.XPATH, value='//*[@id="jobs-search-box-keyword-id-ember326"]')
-        # job_title_field.send_keys("Design Graphique")
-        # job_title_field.send_keys(Keys.ENTER)
-        
-        # "Search by title, skill, or company"
-        # for listing in all_listings:
-        #     print("Opening Listing")
-        #     listing.click()
-        #     time.sleep(2)
-        #     try:
-        #         # Click Apply Button
-        #         apply_button = self.driver.find_element(by=By.CSS_SELECTOR, value=".jobs-s-apply button")
-        #         apply_button.click()
-
-        #         # Insert Phone Number
-        #         # Find an <input> element where the id contains phoneNumber
-        #         time.sleep(5)
-        #         phone = self.driver.find_element(by=By.CSS_SELECTOR, value="input[id*=phoneNumber]")
-        #         if phone.text == "":
-        #             phone.send_keys(phone_number)
-
-        #         # Check the Submit Button
-        #         submit_button = self.driver.find_element(by=By.CSS_SELECTOR, value="footer button")
-        #         if submit_button.get_attribute("data-control-name") == "continue_unify":
-        #             abortApplication()
-        #             print("Complex application, skipped.")
-        #             continue
-        #         else:
-        #             # Click Submit Button
-        #             print("Submitting job application")
-        #             submit_button.click()
-
-        #         time.sleep(2)
-        #         # Click Close Button
-        #         close_button = self.driver.find_element(by=By.CLASS_NAME, value="artdeco-modal__dismiss")
-        #         close_button.click()
-
-        #     except NoSuchElementException:
-        #         abortApplication()
-        #         print("No application button, skipped.")
-        #         continue
-
         return
                 
 if __name__ == "__main__":
