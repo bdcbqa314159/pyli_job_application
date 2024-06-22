@@ -142,7 +142,6 @@ class ApplicationFilling:
         number = 100
         while True:
 
-            # xpath = f'//*[@id="jobs-search-box-keyword-id-ember{number}"]'
             id_job = f"jobs-search-box-keyword-id-ember{number}"
             id_loc = f"jobs-search-box-location-id-ember{number}"
             try:
@@ -218,7 +217,7 @@ if __name__ == "__main__":
     cookiesdenial()
     signIn()
     applicationFilling()
-    # killer()
+    killer()
 
     
     
