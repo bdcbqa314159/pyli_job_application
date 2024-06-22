@@ -1,25 +1,22 @@
-# REST API with Flask and Python in 2024
+# Code for linkedin application
 
-Udemy course - coding along
+## Pre requirements
 
-Day 1:
-Day 2:
-Day 3:
-Day 4:
-Day 5:
-Day 6:
-Day 7:
-Day 8:
-Day 9:
-Day 10:
-Day 11:
-Day 12:
-Day 13:
-Day 14:
-Day 15:
-Day 16:
-Day 17:
-Day 18:
-Day 19: Drawing sketch
-Day 20 and 21: Snake game
-Day 22: Pong game
+1. Setup for virtual env:
+
+   - python -m venv venv
+   - source venv/bin/activate
+
+2. Installing the libraries and then setup for requirements.txt
+
+   - freeze >> requirements.txt
+
+3. User should, once receiving the code:
+
+   - pip install -r requirements.txt
+
+4. User should have a standard python installation and an internet connection
+
+## How to use the code
+
+To be written later.
