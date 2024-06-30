@@ -6,16 +6,27 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-def fonction_lang(language):
-    print("This is the language : ",language)
-    if language == "fr" or None:
-        ID = "S’identifier"
-        JOB = "Offres d’emploi"
-    else:
-        ID = "Sign in"
-        JOB = "Jobs"
-    return [ID, JOB]
 
+class LectureLang:
+    def __init__(self, driver):
+        self._driver = driver
+        self.lang = self.driver.find_element(By.XPATH, "//html").get_attribute('lang')
+
+    @property
+    def driver(self):
+        return self._driver
+
+    def __call__(self):
+        if self.lang == "fr":
+            ID = "S’identifier"
+            JOB = "Offres d’emploi"
+        else:
+            ID = "Sign in"
+            JOB = "Jobs"
+        return [ID, JOB] 
+
+
+        
 class LinkedInUrl:
     def __init__(self):
         load_dotenv()
@@ -24,22 +35,11 @@ class LinkedInUrl:
     def __call__(self):
         return self.url
     
-class SetupDriver():
+class SetupDriver:
     def __init__(self):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("detach", True)
         self._driver = webdriver.Chrome(options=chrome_options)
-
-    def find_lang(self):
-        try:
-            lang = self.driver.find_element(By.XPATH, "//html").get_attribute('lang')
-            # lang = self.driver.find_element(By.XPATH, "\html" )
-            # driver.findElement(By.xpath("//input[@value='f']")); /html
-            print(lang)
-            return lang
-        except NoSuchElementException:
-            print("Element <html> not found")
-            return "Je n'ai pas trouvé la langue"
         
     @property
     def driver(self):
@@ -186,6 +186,7 @@ if __name__ == "__main__":
     mySetup = SetupDriver()
     driver = mySetup.driver
 
+  
     cookiesdenial = CookiesDenial(driver)
     signIn = SignIn(driver)
     applicationFilling = ApplicationFilling(driver)
@@ -193,9 +194,8 @@ if __name__ == "__main__":
     navigate = NavigateUrl(driver, url)
 
     navigate()
-    lang = mySetup.find_lang()
-    print("Je te donne le type de la langue :",type(lang), "qui est", lang)
-    [ID, JOB] = fonction_lang(lang)
+    lect_language = LectureLang(driver)
+    [ID, JOB] = lect_language()
     cookiesdenial()
     signIn(ID)
     applicationFilling(JOB)
