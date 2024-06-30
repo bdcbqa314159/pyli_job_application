@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+import pandas as pd
 
 class LinkedInUrl:
     def __init__(self):
@@ -184,13 +185,57 @@ def test_function():
 if __name__ == "__main__":
     print("working in progress dude")
 
-    path = f'https://www.linkedin.com/jobs/search?keywords=Design%20graphique&location=Paris'
+    path = f'https://www.linkedin.com/jobs/search?keywords=Design%20Graphique&location=Paris&geoId=&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0'
     mySetup = SetupDriver()
     driver = mySetup.driver
     cookiesdenial = CookiesDenial(driver)
     navigate = NavigateUrl(driver, path)
     navigate()
     cookiesdenial()
+
+    links = []
+
+    block = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/ul')  # Find the block that includes the job list
+    job_list = block.find_elements(By.CLASS_NAME, 'base-card')        # Find the job list section in the block
+    print(len(job_list))                                              # Print the number of elements in the list  
+    try:                                          # Protect the process in case null values exist
+        for job in job_list:                    # Loop through the job list
+            try:
+                link = job.find_element(By.CLASS_NAME, 'base-card__full-link').get_attribute('href')  # Extract the link
+                links.append(link)                 # Append the link to the link list
+            except:
+                links.append(None)                 # If the link is not found, add null value to the list
+                ValueError('no link')              # Error message     
+    except:
+        e = 'no path'
+        ValueError(e)
+        print(e)
+
+    print(links)
+
+    contents = []            # Create an empty list to store data. 
+    for link in links:
+        try:
+            driver.get(link)   # Go to the link
+            # Find the 'Show more' button and click it
+            driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/section[1]/div/div/section/button[1]').click()
+            time.sleep(1)      # Let the details load
+            try:
+                content=driver.find_element(By.CLASS_NAME,'show-more-less-html__markup').text    # Find the details on page
+                contents.append(content)       # Append the content into the list
+            except:
+                contents.append(None)
+                ValueError('no content')    
+        except:
+            ValueError('smthng is wrong')
+        time.sleep(5)
+
+    dataframe= pd.DataFrame({'links':linkss,
+                        'content':contents,
+                        'level':levels,
+                        'job_function':job_functions,
+                        'industries':industries,
+                        'employment':employment})
 
     
     
