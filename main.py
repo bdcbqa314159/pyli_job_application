@@ -148,7 +148,7 @@ class ApplicationFilling:
                 job_title_field = driver.find_element(by=By.ID, value=id_job)
                 job_location_field = driver.find_element(by=By.ID, value=id_loc)
                 job_title_field.send_keys("Design Graphique / Directeur Artisitique")
-                job_location_field.send_keys("Paris Toronto")
+                job_location_field.send_keys("Paris")
                 job_title_field.send_keys(Keys.ENTER)
             except:
                 number+=1
