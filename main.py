@@ -6,6 +6,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
+def fonction_lang(language):
+    print("This is the language : ",language)
+    if language == "fr" or None:
+        ID = "S’identifier"
+        JOB = "Offres d’emploi"
+    else:
+        ID = "Sign in"
+        JOB = "Jobs"
+    return [ID, JOB]
+
 class LinkedInUrl:
     def __init__(self):
         load_dotenv()
@@ -20,6 +30,17 @@ class SetupDriver():
         chrome_options.add_experimental_option("detach", True)
         self._driver = webdriver.Chrome(options=chrome_options)
 
+    def find_lang(self):
+        try:
+            lang = self.driver.find_element(By.XPATH, "//html").get_attribute('lang')
+            # lang = self.driver.find_element(By.XPATH, "\html" )
+            # driver.findElement(By.xpath("//input[@value='f']")); /html
+            print(lang)
+            return lang
+        except NoSuchElementException:
+            print("Element <html> not found")
+            return "Je n'ai pas trouvé la langue"
+        
     @property
     def driver(self):
         return self._driver
@@ -106,9 +127,9 @@ class SignIn:
     def driver(self):
         return self._driver
     
-    def __call__(self):
+    def __call__(self, ID):
         time.sleep(2)
-        sign_in_button = self.driver.find_element(by=By.LINK_TEXT, value="Sign in")
+        sign_in_button = self.driver.find_element(by=By.LINK_TEXT, value= ID )
         sign_in_button.click()
         return
 
@@ -120,7 +141,7 @@ class ApplicationFilling:
     def driver(self):
         return self._driver
 
-    def __call__(self):
+    def __call__(self, JOB):
         time.sleep(5)
         env_vars = EnvLoader()
         abortApplication = AbortApplication(self.driver)
@@ -136,7 +157,7 @@ class ApplicationFilling:
 
         time.sleep(5)
         
-        apply_button = driver.find_element(by=By.LINK_TEXT, value="Jobs")
+        apply_button = driver.find_element(by=By.LINK_TEXT, value=JOB)
         apply_button.click()
         
         number = 100
@@ -168,14 +189,17 @@ if __name__ == "__main__":
     cookiesdenial = CookiesDenial(driver)
     signIn = SignIn(driver)
     applicationFilling = ApplicationFilling(driver)
-    killer = KillSession(driver)
+    #killer = KillSession(driver)
     navigate = NavigateUrl(driver, url)
 
     navigate()
+    lang = mySetup.find_lang()
+    print("Je te donne le type de la langue :",type(lang), "qui est", lang)
+    [ID, JOB] = fonction_lang(lang)
     cookiesdenial()
-    signIn()
-    applicationFilling()
-    killer()
+    signIn(ID)
+    applicationFilling(JOB)
+    #killer()
 
     
     
