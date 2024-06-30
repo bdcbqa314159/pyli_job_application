@@ -156,8 +156,11 @@ class ApplicationFilling:
             else:
                 print(f"Job Title and Location Entered number:{number}")
                 break
+        
+        job_listing = self.driver.find_element(by=By.CLASS_NAME, value="scaffold-layout__list-container")
+        
 
-        return
+        return job_listing
     
 def test_function():
     linkedin_url = LinkedInUrl()
@@ -174,12 +177,20 @@ def test_function():
     navigate()
     cookiesdenial()
     signIn()
-    applicationFilling()
+    app = applicationFilling()
+    print(app)
     # killer()
                 
 if __name__ == "__main__":
     print("working in progress dude")
-    test_function()
+
+    path = f'https://www.linkedin.com/jobs/search?keywords=Design%20graphique&location=Paris'
+    mySetup = SetupDriver()
+    driver = mySetup.driver
+    cookiesdenial = CookiesDenial(driver)
+    navigate = NavigateUrl(driver, path)
+    navigate()
+    cookiesdenial()
 
     
     
