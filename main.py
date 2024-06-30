@@ -125,8 +125,8 @@ class ApplicationFilling:
         env_vars = EnvLoader()
         abortApplication = AbortApplication(self.driver)
         account_email, account_password, phone_number = env_vars()
-        email_field = driver.find_element(by=By.ID, value="username")
-        password_field = driver.find_element(by=By.ID, value="password")
+        email_field = self.driver.find_element(by=By.ID, value="username")
+        password_field = self.driver.find_element(by=By.ID, value="password")
 
         email_field.send_keys(account_email)
         password_field.send_keys(account_password)
@@ -136,7 +136,7 @@ class ApplicationFilling:
 
         time.sleep(5)
         
-        apply_button = driver.find_element(by=By.LINK_TEXT, value="Jobs")
+        apply_button = self.driver.find_element(by=By.LINK_TEXT, value="Jobs")
         apply_button.click()
         
         number = 100
@@ -145,8 +145,8 @@ class ApplicationFilling:
             id_job = f"jobs-search-box-keyword-id-ember{number}"
             id_loc = f"jobs-search-box-location-id-ember{number}"
             try:
-                job_title_field = driver.find_element(by=By.ID, value=id_job)
-                job_location_field = driver.find_element(by=By.ID, value=id_loc)
+                job_title_field = self.driver.find_element(by=By.ID, value=id_job)
+                job_location_field = self.driver.find_element(by=By.ID, value=id_loc)
                 job_title_field.send_keys("Design Graphique / Directeur Artisitique")
                 job_location_field.send_keys("Paris")
                 job_title_field.send_keys(Keys.ENTER)
@@ -158,8 +158,8 @@ class ApplicationFilling:
                 break
 
         return
-                
-if __name__ == "__main__":
+    
+def test_function():
     linkedin_url = LinkedInUrl()
     url = linkedin_url()
     mySetup = SetupDriver()
@@ -175,7 +175,11 @@ if __name__ == "__main__":
     cookiesdenial()
     signIn()
     applicationFilling()
-    killer()
+    # killer()
+                
+if __name__ == "__main__":
+    print("working in progress dude")
+    test_function()
 
     
     
