@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 import pandas as pd
+from pathlib import Path
+from datetime import datetime
 
 class LinkedInUrl:
     def __init__(self):
@@ -193,8 +195,36 @@ if __name__ == "__main__":
     navigate()
     cookiesdenial()
 
+    
+    block = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/ul')
+    job_list = block.find_elements(By.CLASS_NAME, 'base-card')
+    current = len(job_list)
+
+    while True:    # Create a loop
+        html = driver.find_element(By.TAG_NAME,'html')
+        html.send_keys(Keys.END)
+        try:
+            t = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/button')   # Find the blue button
+            t.click()                # Click the button 
+            time.sleep(2)           # Let the page load 
+        
+        except:
+            pass
+            html = driver.find_element(By.TAG_NAME,'html')
+            html.send_keys(Keys.END)
+            time.sleep(5)   # Let the page load
+            block = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/ul')
+            job_list = block.find_elements(By.CLASS_NAME, 'base-card')
+            new = len(job_list)
+            if new == current:
+                break
+            else:
+                current = new
+
     links = []
 
+    html = driver.find_element(By.TAG_NAME,'html')
+    html.send_keys(Keys.END)
     block = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/ul')  # Find the block that includes the job list
     job_list = block.find_elements(By.CLASS_NAME, 'base-card')        # Find the job list section in the block
     print(len(job_list))                                              # Print the number of elements in the list  
@@ -213,29 +243,93 @@ if __name__ == "__main__":
 
     print(links)
 
-    contents = []            # Create an empty list to store data. 
-    for link in links:
-        try:
-            driver.get(link)   # Go to the link
-            # Find the 'Show more' button and click it
-            driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/section[1]/div/div/section/button[1]').click()
-            time.sleep(1)      # Let the details load
-            try:
-                content=driver.find_element(By.CLASS_NAME,'show-more-less-html__markup').text    # Find the details on page
-                contents.append(content)       # Append the content into the list
-            except:
-                contents.append(None)
-                ValueError('no content')    
-        except:
-            ValueError('smthng is wrong')
-        time.sleep(5)
+    # contents = []            # Create an empty list to store data. 
+    # for link in links:
+    #     try:
+    #         driver.get(link)   # Go to the link
+    #         # Find the 'Show more' button and click it
+    #         driver.find_element(By.XPATH,'//*[@id="main-content"]/section[1]/div/div/section[1]/div/div/section/button[1]').click()
+    #         time.sleep(1)      # Let the details load
+    #         try:
+    #             content=driver.find_element(By.CLASS_NAME,'show-more-less-html__markup').text    # Find the details on page
+    #             contents.append(content)       # Append the content into the list
+    #         except:
+    #             contents.append(None)
+    #             ValueError('no content')    
+    #     except:
+    #         ValueError('smthng is wrong')
+    #     time.sleep(5)
 
-    dataframe= pd.DataFrame({'links':linkss,
-                        'content':contents,
-                        'level':levels,
-                        'job_function':job_functions,
-                        'industries':industries,
-                        'employment':employment})
+    dataframe= pd.DataFrame({'links':links,})
+                                                         # Instantiate the Chrome browser
+    # links = []                                                                           # Create an empty links list to use later as storage.
+    # position_names = []                                                                  # Create an empty position names list to use later as storage.
+    # companies = []                                                                       # Create an empty companies list to use later as storage.
+    # locations = []  
+    # i = 0
+    # page_number = 2                                                                                # Base number that helps with arranging the iteration number
+    # while i < page_number:                                                               # While loop that helps with scrolling. 
+    #     html = driver.find_element(By.TAG_NAME,'html')                                   # Select anything on the page
+    #     html.send_keys(Keys.END)                                                         # Send 'END' key to scroll down the page 
+    #     i = i+1                                                                          # i increases incrementally. This helps with the number of repeats
+    #     try:                                                                             # If the HTML does not include the desired element, the flow is protected with try func.
+    #         t = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/button')# Find 'See more Jobs' button
+    #         t.click()                                                                    # Click the button
+    #         time.sleep(2)                                                                # Let the page load for 2 seconds.
+    #     except:                                                                          # If a problem arises the flow continues. 
+    #         pass
+    #         time.sleep(3)                                                                # Wait for 3 secs
+    #     block = driver.find_element(By.XPATH,'//*[@id="main-content"]/section[2]/ul')        # Find 
+    #     job_list = block.find_elements(By.CLASS_NAME, 'base-card')
+    #     try:
+    #         for job in job_list:
+    #             try:
+    #                 link = job.find_element(By.CLASS_NAME, 'base-card__full-link').get_attribute('href')
+    #                 links.append(link)
+    #             except:
+    #                 links.append(None)
+    #                 ValueError('no link')
+    #             try:
+    #                 position_name = job.find_element(By.TAG_NAME,'span').text
+    #                 position_names.append(position_name)
+    #             except:
+    #                 position_names.append(None)
+    #                 ValueError('no pos name')
+    #             try:
+    #                 company = job.find_element(By.CLASS_NAME,'hidden-nested-link').text
+    #                 companies.append(company)
+    #             except:
+    #                 companies.append(None)
+    #                 ValueError('no company')
+    #             try:
+    #                 location = job.find_element(By.CLASS_NAME,'job-search-card__location').text
+    #                 locations.append(location)
+    #             except:
+    #                 locations.append(None)
+    #                 ValueError('no location')
+    #     except:
+    #         e = 'no path'
+    #         ValueError(e)
+    #         print(e)
+    #     data = pd.DataFrame({'Position':position_names,
+    #             'Company':companies,
+    #             'Location':locations,
+    #             'Link':links})
+    
+    
+    current_directory = Path(__file__).parents[0]
+    output = current_directory.joinpath('output')
+    
+    if not os.path.exists(output):
+        os.makedirs(output)
+    
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    file_name = output.joinpath(f'output_{today}.xlsx')
+
+    dataframe.to_excel(file_name)
+    print('DataFrame is written to Excel File successfully.')
+   
 
     
     
