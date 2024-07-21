@@ -238,11 +238,7 @@ class ApplicationFilling:
 
         time.sleep(5)
         
-<<<<<<< HEAD
-        apply_button = self.driver.find_element(by=By.LINK_TEXT, value="Jobs")
-=======
         apply_button = driver.find_element(by=By.LINK_TEXT, value=JOB)
->>>>>>> master
         apply_button.click()
         
         number = 100
