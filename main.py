@@ -10,6 +10,27 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime
 
+
+class LectureLang:
+    def __init__(self, driver):
+        self._driver = driver
+        self.lang = self.driver.find_element(By.XPATH, "//html").get_attribute('lang')
+
+    @property
+    def driver(self):
+        return self._driver
+
+    def __call__(self):
+        if self.lang == "fr":
+            ID = "S’identifier"
+            JOB = "Offres d’emploi"
+        else:
+            ID = "Sign in"
+            JOB = "Jobs"
+        return [ID, JOB] 
+
+
+        
 class LinkedInUrl:
     def __init__(self):
         load_dotenv()
@@ -18,14 +39,14 @@ class LinkedInUrl:
     def __call__(self):
         return self.url
     
-class SetupDriver():
+class SetupDriver:
     def __init__(self):
         chrome_options = webdriver.ChromeOptions()
         # chrome_options.add_argument("--headless")
         # chrome_options.add_argument("--start-maximized")
         chrome_options.add_experimental_option("detach", True)
         self._driver = webdriver.Chrome(options=chrome_options)
-
+        
     @property
     def driver(self):
         return self._driver
@@ -115,9 +136,9 @@ class SignIn:
     def driver(self):
         return self._driver
     
-    def __call__(self):
+    def __call__(self, ID):
         time.sleep(2)
-        sign_in_button = self.driver.find_element(by=By.LINK_TEXT, value="Sign in")
+        sign_in_button = self.driver.find_element(by=By.LINK_TEXT, value= ID )
         sign_in_button.click()
         return
     
@@ -201,7 +222,7 @@ class ApplicationFilling:
     def driver(self):
         return self._driver
 
-    def __call__(self):
+    def __call__(self, JOB):
         time.sleep(5)
         env_vars = EnvLoader()
         abortApplication = AbortApplication(self.driver)
@@ -217,7 +238,11 @@ class ApplicationFilling:
 
         time.sleep(5)
         
+<<<<<<< HEAD
         apply_button = self.driver.find_element(by=By.LINK_TEXT, value="Jobs")
+=======
+        apply_button = driver.find_element(by=By.LINK_TEXT, value=JOB)
+>>>>>>> master
         apply_button.click()
         
         number = 100
@@ -247,17 +272,20 @@ def chunk_1():
     mySetup = SetupDriver()
     driver = mySetup.driver
 
+  
     cookiesdenial = CookiesDenial(driver)
     signIn = SignIn(driver)
     applicationFilling = ApplicationFilling(driver)
-    killer = KillSession(driver)
+    #killer = KillSession(driver)
     navigate = NavigateUrl(driver, url)
 
     navigate()
+    lect_language = LectureLang(driver)
+    [ID, JOB] = lect_language()
     cookiesdenial()
-    signIn()
-    applicationFilling()
-    killer()
+    signIn(ID)
+    applicationFilling(JOB)
+    #killer()
 
 
 def chunk_2():
