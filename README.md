@@ -5,17 +5,14 @@
 1. Setup for virtual env:
 
    - python -m venv venv
-   - source venv/bin/activate
+   - source venv/bin/activate -> Linux and MacOS
+   - venv/bin/activate.bat -> Windows cmd
 
-2. Installing the libraries and then setup for requirements.txt
-
-   - freeze >> requirements.txt
-
-3. User should, once receiving the code:
+2. User should, once receiving the code:
 
    - pip install -r requirements.txt
 
-4. User should have a standard python installation and an internet connection
+3. User should have a standard python installation and an internet connection
 
 ## How to use the code
 
